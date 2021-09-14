@@ -1,0 +1,41 @@
+body {
+    background-color: RGBA(30, 240, 100, 0.2);
+    min-height: 100vh;
+}
+
+.section {
+    padding: 1rem 1.5rem;
+    max-width: 750px;
+    margin: auto;
+}
+
+.title {
+    font-weight: 800;
+    font-size: 5rem;
+    font-family: 'Gamja Flower', cursive;
+}
+
+.subtitle {
+    font-size: 2rem;
+    font-family: 'Stylish', sans-serif;
+}
+
+.is-sparta {
+    color: #00d1b2 !important;
+}
+
+.button.is-sparta {
+    background-color: #00d1b2;
+    border-color: transparent;
+    color: #fff !important;
+}
+
+.button.is-sparta.is-outlined {
+    background-color: transparent;
+    border-color: #00d1b2;
+    color: #00d1b2 !important;
+}
+
+.help {
+    color: gray;
+}
