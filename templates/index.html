@@ -3,7 +3,7 @@
 <head>
 
     <!-- Webpage Title -->
-    <title>Home | SWEETER</title>
+    <title>Home | FindingBook</title>
 
     <!-- Required meta tags -->
     <meta charset="utf-8">
@@ -23,20 +23,24 @@
         function sign_out() {
             $.removeCookie('mytoken', {path: '/'});
             alert("로그아웃!!")
-            window.location.href = "/login"
+            window.location.href = "/"
         }
 
         setTimeout(function () {
             opener.location.reload(); //부모창 리프레쉬
             self.close(); //현재창 닫기
-        }, 300); // 0.3초후 실행 1000당 1초
+        }, 50); // 0.3초후 실행 1000당 1초
     </script>
 
 </head>
 <body>
-    <a onclick="sign_out()">로그아웃</a>
+    {% if user_exist %}
+        <a onclick="sign_out()">로그아웃</a>
+    {% else %}
     <a href="#"
-       onclick='window.open("login","_blank","height=500,width=500, status=yes,toolbar=no,menubar=no,location=no");return false'>
+       onclick='window.open("login","_blank","height=500,width=500, status=yes,toolbar=no,menubar=no,location=no");
+       return false'>
         로그인</a>
+    {% endif %}
 </body>
 </html>
