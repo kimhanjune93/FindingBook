@@ -5,7 +5,6 @@ import hashlib
 from flask import Flask, render_template, jsonify, request, redirect, url_for
 from werkzeug.utils import secure_filename
 from datetime import datetime, timedelta
-ç
 
 app = Flask(__name__)
 app.config["TEMPLATES_AUTO_RELOAD"] = True
