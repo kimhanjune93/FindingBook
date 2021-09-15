@@ -134,6 +134,12 @@ def update_like():
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return redirect(url_for("home"))
 
+# 도서 상세보기 페이지
+@app.route('/detail')
+def book_detail():
+   isbn = request.args.get('isbn')
+   print(isbn)
+   return render_template('detail.html', isbn=isbn)
 
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)

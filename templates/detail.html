@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+</head>
+<body>
+
+<h1>상세보기 페이지</h1>
+
+<span id="title">제목: </span><br>
+<span id="author">저자: </span><br>
+<span id="publisher">출판사: </span><br>
+<span id="price">가격: </span><br>
+<img id="thumbnail" src="" alt="">
+
+<h3>리뷰작성</h3>
+<input id="review" type="text" placeholder="리뷰를 작성해 주세요">
+<button onclick="make_review()">작성</button>
+
+
+<script>
+    $(document).ready(function () {
+        get_list()
+        show_review()
+    })
+
+    function get_list() {
+        let isbn = {{isbn}}
+        $('#book-box').empty();
+        let book_name = $("#book_name").val();
+        $.ajax({
+            type: "GET",
+            url: "https://dapi.kakao.com/v3/search/book?target=title",
+            data: {
+                query: isbn,
+                size: 50
+            },
+            headers: {Authorization: "KakaoAK 07adc98fbcdc85184c1b3f274ce34f54"},
+        }).done(function (msg) {
+            console.log(msg.documents)
+            let title = msg.documents[0].title;
+            let author = msg.documents[0].authors[0];
+            let publisher = msg.documents[0].publisher;
+            let price = msg.documents[0].sale_price;
+            let thumbnail = msg.documents[0].thumbnail;
+
+            $("#title").append(title);
+            $("#author").append(author);
+            $("#publisher").append(publisher);
+            $("#price").append(price);
+            $("#thumbnail").attr("src", thumbnail);
+        })
+    }
+
+    function make_review() {
+        let review = $("#review").val();
+        let isbn = {{isbn}}
+
+        $.ajax({
+            type: "POST",
+            url: "/review",
+            data: {
+                review_give: review,
+                isbn_give: isbn
+            },success: function (response) {
+                alert(response['msg']);
+                window.location.reload();
+            }
+        })
+
+    }
+
+    function show_review() {
+        let isbn = {{isbn}}
+        $.ajax({
+            type: "GET",
+            url: `/review?isbn=${isbn}`,
+            data: {},
+            success: function (response) {
+                // response[넘겨준 데이터 키] -> JSON.parse로 형변환
+                let reviews = JSON.parse(response['reviews'])
+
+                // 컬럼 접근: reviews[행][컬럼명]
+                for (let i=0; i<reviews.length; i++) {
+                    console.log(reviews[i]['review']);
+                    console.log(reviews[i]['isbn']);
+                }
+            }
+        });
+    }
+
+</script>
+
+</body>
+</html>

@@ -21,18 +21,21 @@
 
     <script>
         $(document).ready(function () {
-            $('#list_box').attr('style', "display:none;");
+            {#$('#list_box').attr('style', "display:none;");#}
         })
 
         function q1() {
             let book_name = $("#input-add").val();
-            $('#list_box').attr('style', "display:none;");
+            {#$('#list_box').attr('style', "display:none;");#}
             $('#tbody-box').empty()
             {#$('#list_box').attr('style', "display:'';");#}
             $.ajax({
                 type: "GET",
                 url: "https://dapi.kakao.com/v3/search/book?target=title",
-                data: {query: book_name},
+                data: {
+                    query: book_name,
+                    size: 50
+                },
                 headers: {Authorization: "KakaoAK 07adc98fbcdc85184c1b3f274ce34f54"},
                 error: function (error) {
                     alert("검색창에 책이름을 입력해주세요. ") //검색창 입력값 없을 시
@@ -45,17 +48,20 @@
                         alert("검색 결과가 없습니다.") //책 목록이 없을 시
                         return
                     } else {
-                        $('#list_box').attr('style', "display:'';"); //책 api 리스트 불러오기
+                        {#$('#list_box').attr('style', "display:'';"); //책 api 리스트 불러오기#}
                         for (let i = 0; i < rows.length; i++) {
                             let title = rows[i]['title']
                             let author = rows[i]['authors']
                             let contents = rows[i]['contents']
+                            let isbn = rows[i].isbn.substring(11)
 
-                            let temp_html_02 = `<tr onclick="q2()">
-                                            <td>${title}</td>
-                                            <td>${author}</td>
-                                            <td>${contents}</td>
-                                        </tr>`
+
+                            let temp_html_02 = `
+                                <tr onclick="window.location.href='/detail?isbn=${isbn}'">
+                                    <td>${title}</td>
+                                    <td>${author}</td>
+                                    <td>${contents}</td>
+                                </tr>`
                             $('#tbody-box').append(temp_html_02)
                         }
                     }
@@ -66,6 +72,12 @@
         function q2() {
             window.location.href = `/detail`
         }
+
+        function enter_key() {
+        if (window.event.keyCode === 13) {
+            get_list()
+        }
+    }
     </script>
 
     <script>
@@ -107,8 +119,9 @@
     <div class="search-box mx-auto mt-4 search-bar input-group mb-3">
         <input type="text" class="form-control" id="input-add" placeholder="책 이름을 입력해주세요."
                aria-label="Recipient's username"
-               aria-describedby="button-addon2">
-        <button class="btn btn-outline-secondary" type="button" id="button-addon2" onclick="q1()">검색</button>
+               aria-describedby="button-addon2"
+               onkeyup="enter_key()">
+        <button class="btn btn-outline-secondary" type="button" id="button-addon2" onclick="q1() ">검색</button>
     </div>
     <div id="list_box">
         <table class="table table-hover">
