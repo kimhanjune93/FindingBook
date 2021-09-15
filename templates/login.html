@@ -169,9 +169,10 @@
             });
         }
         function enter_key() {
-            if(window.event.keyCode==13) {
-                sign_in()
-            }
+            if(!$("#btn-check-dup").is(":visible"))
+                if(window.event.keyCode==13) {
+                    sign_in()
+                }
         }
     </script>
 
@@ -203,7 +204,7 @@
 
                         <div class="field">
                             <div class="control has-icons-left">
-                                <input onkeyup = "enter_key()" id="input-password" class="input" type="password" placeholder="비밀번호">
+                                <input onkeyup="enter_key()" id="input-password" class="input" type="password" placeholder="비밀번호">
                                 <span class="icon is-small is-left"><i class="fa fa-lock"></i></span>
                             </div>
                             <p id="help-password" class="help is-hidden">영문과 숫자 조합의 8-20자의 비밀번호를 설정해주세요. 특수문자(!@#$%^&*)도
