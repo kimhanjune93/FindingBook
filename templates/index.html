@@ -1,23 +1,72 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="ko">
 <head>
+    <meta charset="UTF-8">
+    <title>오늘뭐읽지</title>
 
-    <!-- Webpage Title -->
-    <title>Home | FindingBook</title>
-
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
 
     <!-- Bulma CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
     <!-- Font Awesome CSS -->
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <!-- home style CSS -->
+    <link rel = "stylesheet" type="text/css" href="/static/home_style.css">
 
     <!-- JS -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
 
+
+    <script>
+        $(document).ready(function () {
+            $('#list_box').attr('style', "display:none;");
+        })
+
+        function q1() {
+            let book_name = $("#input-add").val();
+            $('#list_box').attr('style', "display:none;");
+            $('#tbody-box').empty()
+            {#$('#list_box').attr('style', "display:'';");#}
+            $.ajax({
+                type: "GET",
+                url: "https://dapi.kakao.com/v3/search/book?target=title",
+                data: {query: book_name},
+                headers: {Authorization: "KakaoAK 07adc98fbcdc85184c1b3f274ce34f54"},
+                error: function (error) {
+                    alert("검색창에 책이름을 입력해주세요. ") //검색창 입력값 없을 시
+                    return
+                },
+                success: function (response) {
+                    let rows = response['documents']
+                    console.log(rows)
+                    if (rows == "") {
+                        alert("검색 결과가 없습니다.") //책 목록이 없을 시
+                        return
+                    } else {
+                        $('#list_box').attr('style', "display:'';"); //책 api 리스트 불러오기
+                        for (let i = 0; i < rows.length; i++) {
+                            let title = rows[i]['title']
+                            let author = rows[i]['authors']
+                            let contents = rows[i]['contents']
+
+                            let temp_html_02 = `<tr onclick="q2()">
+                                            <td>${title}</td>
+                                            <td>${author}</td>
+                                            <td>${contents}</td>
+                                        </tr>`
+                            $('#tbody-box').append(temp_html_02)
+                        }
+                    }
+                }
+            })
+        }
+
+        function q2() {
+            window.location.href = `/detail`
+        }
+    </script>
 
     <script>
         function sign_out() {
@@ -34,17 +83,47 @@
 
 </head>
 <body>
-    {% if user_exist %}
-<!--        <a onclick="sign_out()">로그아웃</a>-->
-    <button class="button is-primary" onclick="sign_out()">로그아웃</button>
-    {% else %}
-<!--    <a href="#"-->
-<!--       onclick='window.open("login","_blank","height=500,width=500, status=yes,toolbar=no,menubar=no,location=no");-->
-<!--       return false'>-->
-<!--        로그인</a>-->
-    <button href="#" onclick='window.open("login","_blank","height=500,width=500, status=yes,toolbar=no,menubar=no,location=no");return false'
-            class="button is-primary" >로그인</button>
-    {% endif %}
+<div class="wrap">
+    <div class="banner">
+        <div class="banner-top">
+            {% if user_exist %}
+                <!--        <a onclick="sign_out()">로그아웃</a>-->
+                <button class="button is-primary" onclick="sign_out()">로그아웃</button>
+            {% else %}
+                <!--    <a href="#"-->
+                <!--       onclick='window.open("login","_blank","height=500,width=500, status=yes,toolbar=no,menubar=no,location=no");-->
+                <!--       return false'>-->
+                <!--        로그인</a>-->
+                <button href="#"
+                        onclick='window.open("login","_blank","height=500,width=500, status=yes,toolbar=no,menubar=no,location=no");return false'
+                        class="button is-primary">로그인
+                </button>
+            {% endif %}
+        </div>
+        <div class="banner-row" onclick="window.location.href = '/'">
+            <h1 href="/detail" class="banner_title">오늘 뭐 읽지?</h1>
+        </div>
+    </div>
+    <div class="search-box mx-auto mt-4 search-bar input-group mb-3">
+        <input type="text" class="form-control" id="input-add" placeholder="책 이름을 입력해주세요."
+               aria-label="Recipient's username"
+               aria-describedby="button-addon2">
+        <button class="btn btn-outline-secondary" type="button" id="button-addon2" onclick="q1()">검색</button>
+    </div>
+    <div id="list_box">
+        <table class="table table-hover">
+            <thead class="table table-striped table-hover" style="max-width: 600px;">
+            <tr>
+                <th scope="col" style="width:30%">책이름</th>
+                <th scope="col" style="width:30%">저자</th>
+                <th scope="col">요약</th>
+            </tr>
+            </thead>
+            <tbody id="tbody-box">
+            </tbody>
+        </table>
+    </div>
+</div>
 
 </body>
 </html>
