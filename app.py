@@ -146,20 +146,23 @@ def book_detail():
 @app.route('/review', methods=['POST'])
 def make_review():
     token_receive = request.cookies.get('mytoken')
-    payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
-    id = payload['id']
-    review = request.form['review_give']
-    isbn = request.form['isbn_give']
+    if token_receive is None:
+        return jsonify({'msg': '로그인을 먼저 해주세요'})
+    else:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+        id = payload['id']
+        review = request.form['review_give']
+        isbn = request.form['isbn_give']
 
-    doc = {
-        'username': id,
-        'review': review,
-        'isbn': isbn
-    }
+        doc = {
+            'username': id,
+            'review': review,
+            'isbn': isbn
+        }
 
-    db.reviews.insert_one(doc)
+        db.reviews.insert_one(doc)
 
-    return jsonify({'msg': '리뷰 작성 성공!'})
+        return jsonify({'msg': '리뷰 작성 성공!'})
 
 # 리뷰 조회
 @app.route('/review', methods=['GET'])
