@@ -5,6 +5,7 @@ import hashlib
 from flask import Flask, render_template, jsonify, request, redirect, url_for
 from werkzeug.utils import secure_filename
 from datetime import datetime, timedelta
+from bson.json_util import dumps
 
 app = Flask(__name__)
 app.config["TEMPLATES_AUTO_RELOAD"] = True
@@ -140,6 +141,34 @@ def book_detail():
    isbn = request.args.get('isbn')
    print(isbn)
    return render_template('detail.html', isbn=isbn)
+
+# 리뷰 작성
+@app.route('/review', methods=['POST'])
+def make_review():
+    token_receive = request.cookies.get('mytoken')
+    payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+    id = payload['id']
+    review = request.form['review_give']
+    isbn = request.form['isbn_give']
+
+    doc = {
+        'username': id,
+        'review': review,
+        'isbn': isbn
+    }
+
+    db.reviews.insert_one(doc)
+
+    return jsonify({'msg': '리뷰 작성 성공!'})
+
+# 리뷰 조회
+@app.route('/review', methods=['GET'])
+def read_review():
+   isbn = request.args.get('isbn')
+   reviews = list(db.reviews.find({'isbn': isbn}))
+   print(isbn, len(reviews))
+   return jsonify({'reviews': dumps(reviews)})
+
 
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)

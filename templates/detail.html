@@ -20,6 +20,11 @@
 <input id="review" type="text" placeholder="리뷰를 작성해 주세요">
 <button onclick="make_review()">작성</button>
 
+<!-- 리뷰들이 보여질 영역 -->
+<div id="review-box">
+</div>
+
+
 
 <script>
     $(document).ready(function () {
@@ -55,6 +60,7 @@
         })
     }
 
+    // 리뷰 작성
     function make_review() {
         let review = $("#review").val();
         let isbn = {{isbn}}
@@ -73,6 +79,7 @@
 
     }
 
+    // 리뷰 조회
     function show_review() {
         let isbn = {{isbn}}
         $.ajax({
@@ -82,11 +89,17 @@
             success: function (response) {
                 // response[넘겨준 데이터 키] -> JSON.parse로 형변환
                 let reviews = JSON.parse(response['reviews'])
+                console.log(reviews)
 
                 // 컬럼 접근: reviews[행][컬럼명]
                 for (let i=0; i<reviews.length; i++) {
-                    console.log(reviews[i]['review']);
-                    console.log(reviews[i]['isbn']);
+                    username = reviews[i]['username']
+                    review = reviews[i]['review']
+
+                    temp_html = `
+                        ${username}, ${review} <br>
+                    `
+                    $("#review-box").append(temp_html)
                 }
             }
         });
