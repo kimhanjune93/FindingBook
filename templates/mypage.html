@@ -2,9 +2,21 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>마이페이지</title>
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="/static/home_style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
     <style>
+        * {
+            font-family: 'Jua', sans-serif;
+        }
         #bookmark-box {
             display: flex;
             justify-content: center;
@@ -12,15 +24,30 @@
             flex-wrap: wrap;
         }
         .card {
-            margin: 20px;
+            margin : 15px;
+        }
+        .close-button{
+            margin-left : 200px;
+            position:absolute;
         }
     </style>
 </head>
 <body>
+<div class="wrap">
+    <div class="banner">
+        <div class="banner-top">
+            <button class = "btn btn-light" onclick="location.href='mypage'">마이페이지</button>
+            <button class="btn btn-light" onclick="sign_out()">로그아웃</button>
+        </div>
+        <div class="banner-row" onclick="window.location.href = '/'">
+            <h1 href="/detail" class="banner_title">오늘 뭐 읽지?</h1>
+        </div>
+    </div>
+    <div class="card-columns" id="bookmark-box"></div>
 
-<h1>마이페이지</h1>
 
-<div id="bookmark-box"></div>
+</div>
+
 
 <script>
 
@@ -37,23 +64,33 @@
                 let bookmark = JSON.parse(response['bookmarks']);
                 console.log(bookmark);
 
-                for (let i=0; i<bookmark.length; i++) {
+                for (let i = 0; i < bookmark.length; i++) {
                     isbn = bookmark[i]['isbn'];
                     title = bookmark[i]['title'];
                     thumbnail = bookmark[i]['thumbnail']
 
-                    let temp_html =
-                        `
-                        <div class="card" style="width: 18rem;">
-                            <img src="${thumbnail}" class="card-img-top" alt="...">
-                            <div class="card-body">
-                                <h5 class="card-title">${title}</h5>
-                                <button onclick="delete_bookmark(${i})" class="deleteBtn">북마크 삭제</button>
-                                <input type="hidden" class="isbn" value="${isbn}">
-                             </div>
+                    {#let temp_html =#}
+                    {#    `#}
+                    {#    <div class="card" style="width: 18rem;">#}
+                    {#        <img src="${thumbnail}" class="card-img-top" alt="...">#}
+                    {#        <div class="card-body">#}
+                    {#            <h5 class="card-title">${title}</h5>#}
+                    {#            <button onclick="delete_bookmark(${i})" class="deleteBtn">북마크 삭제</button>#}
+                    {#            <input type="hidden" class="isbn" value="${isbn}">#}
+                    {#         </div>#}
+                    {#    </div>#}
+                    {#    `#}
+                    let temp_html = `
+                    <div class="card" style="width: 14rem;">
+                        <spen><button type="button" class="btn-close close-button" aria-label="Delete"
+                                onclick="delete_bookmark(${i})"></button></spen>
+                        <img class="card-img-top" src="${thumbnail}" alt="Card image cap">
+                        <div class="card-body">
+                            <h5 class="card-title">${title}</h5>
                         </div>
-                        `
+                    </div>`
                     $('#bookmark-box').append(temp_html);
+                                            {#<a  class="btn btn-danger">삭제하기</a>#}
                 }
             }
         })
@@ -67,15 +104,18 @@
             url: '/mybook/delete',
             data: {
                 number_give: i
-            },success: function (response) {
+            }, success: function (response) {
                 alert(response['msg']);
                 window.location.reload();
             }
         })
     }
 
-
-
+    function sign_out() {
+            $.removeCookie('mytoken', {path: '/'});
+            alert("로그아웃!!")
+            window.location.href = "/"
+        }
 </script>
 
 </body>
