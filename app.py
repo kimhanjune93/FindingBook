@@ -182,7 +182,7 @@ def bookmark():
         else:
             doc = {
                 'username': id,
-                'isbn' : isbn,
+                'isbn': isbn,
                 'title': title,
                 'thumbnail': thumbnail
             }

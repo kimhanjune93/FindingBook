@@ -43,6 +43,7 @@
                 let author = msg.documents[0].authors;
                 let contents = msg.documents[0].contents;
                 let thumbnail = msg.documents[0].thumbnail;
+                console.log(title)
 
                 let temp_html = `<div class="card mb-3 book-card card-box" style="max-width: 600px;">
                                     <div class="row g-0">
@@ -54,7 +55,7 @@
                                                 <h5 class="card-title" style="font-weight: bold">${title}</h5>
                                                 <div style="display: flex; justify-content: space-between;">
                                                 <p class="card-text"><small class="text-muted">${author}</small></p>
-                                                <input type="hidden" value="" id="title_give" name="title_give">
+                                                <input type="hidden" value="${title}" id="title_give" name="title_give">
                                                 <button onclick="bookmark()">북마크</button>
                                                 </div>
                                                 <p class="card-text">${contents}</p>
