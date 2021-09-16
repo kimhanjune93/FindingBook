@@ -47,12 +47,16 @@
                 let temp_html = `<div class="card mb-3 book-card card-box" style="max-width: 600px;">
                                     <div class="row g-0">
                                         <div class="col-md-4" style="align-items: center">
-                                            <img src="${thumbnail}" class="img-fluid rounded-start" alt="..." style="width: 100%; height: 100%; object-fit: cover">
+                                            <img id="thumbnail" src="${thumbnail}" class="img-fluid rounded-start" alt="..." style="width: 100%; height: 100%; object-fit: cover">
                                         </div>
                                         <div class="col-md-8">
                                             <div class="card-body">
                                                 <h5 class="card-title" style="font-weight: bold">${title}</h5>
+                                                <div style="display: flex; justify-content: space-between;">
                                                 <p class="card-text"><small class="text-muted">${author}</small></p>
+                                                <input type="hidden" value="" id="title_give" name="title_give">
+                                                <button onclick="bookmark()">북마크</button>
+                                                </div>
                                                 <p class="card-text">${contents}</p>
                                             </div>
                                         </div>
@@ -111,7 +115,7 @@
                             let review = reviews[i]['review']
                             let regdate = reviews[i]['regdate']
                             let temp_html = `<tr>
-                                            <th scope="row">${i+1}</th>
+                                            <th scope="row">${i + 1}</th>
                                             <td>${username}</td>
                                             <td>${review}</td>
                                             <td>${regdate}</td>
@@ -120,6 +124,25 @@
                         }
                     }
                 });
+        }
+
+        // 북마크 저장
+        function bookmark() {
+            let isbn = {{ isbn }};
+            let title = $('#title_give').val();
+            let thumbnail = jQuery('#thumbnail').attr("src");
+            $.ajax({
+                type: "POST",
+                url: `/bookmark`,
+                data: {
+                    isbn: isbn,
+                    title: title,
+                    thumbnail: thumbnail
+                }, success: function (response) {
+                    alert(response['msg'])
+                    window.location.reload();
+                }
+            })
         }
 
     </script>
@@ -202,6 +225,7 @@
             </tbody>
         </table>
     </div>
+
 
 
 </div>
