@@ -128,7 +128,9 @@ def get_posts():
 @app.route('/detail')
 def book_detail():
    isbn = request.args.get('isbn')
-   return render_template('detail.html', isbn=isbn)
+   token_receive = request.cookies.get('mytoken')
+   payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+   return render_template('detail.html', isbn=isbn, user_exist=bool(payload['id']))
 
 # 리뷰 작성
 @app.route('/review', methods=['POST'])
