@@ -19,8 +19,9 @@
             font-family: 'Jua', sans-serif;
         }
         #bookmark-box {
+            width : 1016px;
             display: flex;
-            justify-content: center;
+            justify-content: left;
             flex-direction: row;
             flex-wrap: wrap;
         }
@@ -39,7 +40,11 @@
             transition-duration: 1s;
         }
         .card .card {
-            overfolw: hidden;
+            overflow: hidden;
+        }
+        .card-box-big {
+            display : flex;
+            justify-content: center;
         }
     </style>
 </head>
@@ -54,8 +59,9 @@
             <h1 href="/detail" class="banner_title">오늘 뭐 읽지?</h1>
         </div>
     </div>
-    <div class="card-columns" id="bookmark-box"></div>
-
+    <div class = "card-box-big">
+        <div class="card-columns" id="bookmark-box"></div>
+    </div>
 
 </div>
 
