@@ -47,7 +47,7 @@
 <div class="wrap">
     <div class="banner">
         <div class="banner-top">
-            <button class = "btn btn-light" onclick="location.href='mypage'">마이페이지</button>
+            <button class = "btn btn-light" onclick="location.href='/mypage'">마이페이지</button>
             <button class="btn btn-light" onclick="sign_out()">로그아웃</button>
         </div>
         <div class="banner-row" onclick="window.location.href = '/'">
@@ -69,7 +69,7 @@
     function show_bookmark() {
         $.ajax({
             type: "GET",
-            url: `/mybook`,
+            url: `/bookmarks/read`,
             data: {},
             success: function (response) {
                 let bookmark = JSON.parse(response['bookmarks']);
@@ -101,7 +101,7 @@
 
         $.ajax({
             type: "POST",
-            url: '/mybook/delete',
+            url: '/bookmarks/delete',
             data: {
                 number_give: i
             }, success: function (response) {

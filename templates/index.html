@@ -57,7 +57,7 @@
 
 
                             let temp_html_02 = `
-                                <tr onclick="window.location.href='/detail?isbn=${isbn}'">
+                                <tr onclick="window.location.href='/books/read?isbn=${isbn}'">
                                     <td>${title}</td>
                                     <td>${author}</td>
                                     <td>${contents}</td>
@@ -99,7 +99,7 @@
     <div class="banner">
         <div class="banner-top">
             {% if user_exist %}
-                <button class = "btn btn-light" onclick="location.href='mypage'">마이페이지</button>
+                <button class = "btn btn-light" onclick="location.href='/mypage'">마이페이지</button>
                 <button class = "btn btn-light" onclick="sign_out()">로그아웃</button>
             {% else %}
                 <button href="#"

@@ -84,7 +84,7 @@
 
                 $.ajax({
                     type: "POST",
-                    url: "/review",
+                    url: "/reviews/new",
                     data: {
                         review_give: review,
                         isbn_give: isbn,
@@ -102,7 +102,7 @@
             let isbn = {{isbn}}
                 $.ajax({
                     type: "GET",
-                    url: `/review?isbn=${isbn}`,
+                    url: `/reviews/read?isbn=${isbn}`,
                     data: {},
                     success: function (response) {
                         // response[넘겨준 데이터 키] -> JSON.parse로 형변환
@@ -133,7 +133,7 @@
             let thumbnail = jQuery('#thumbnail').attr("src");
             $.ajax({
                 type: "POST",
-                url: `/bookmark`,
+                url: `/bookmarks/new`,
                 data: {
                     isbn: isbn,
                     title: title,
@@ -196,7 +196,7 @@
     <div class="banner">
         <div class="banner-top">
             {% if user_exist %}
-                <button class="btn btn-light" onclick="location.href='mypage'">마이페이지</button>
+                <button class="btn btn-light" onclick="location.href='/mypage'">마이페이지</button>
                 <button class="btn btn-light" onclick="sign_out()">로그아웃</button>
             {% else %}
                 <button href="#"

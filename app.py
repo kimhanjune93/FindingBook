@@ -125,7 +125,7 @@ def get_posts():
         return redirect(url_for("home"))
 
 # 도서 상세보기 페이지
-@app.route('/detail')
+@app.route('/books/read')
 def book_detail():
    isbn = request.args.get('isbn')
    token_receive = request.cookies.get('mytoken')
@@ -133,7 +133,7 @@ def book_detail():
    return render_template('detail.html', isbn=isbn, user_exist=bool(payload['id']))
 
 # 리뷰 작성
-@app.route('/review', methods=['POST'])
+@app.route('/reviews/new', methods=['POST'])
 def make_review():
     token_receive = request.cookies.get('mytoken')
     if token_receive is None:
@@ -157,14 +157,14 @@ def make_review():
         return jsonify({'msg': '리뷰 작성 성공!'})
 
 # 리뷰 조회
-@app.route('/review', methods=['GET'])
+@app.route('/reviews/read', methods=['GET'])
 def read_review():
    isbn = request.args.get('isbn')
    reviews = list(db.reviews.find({'isbn': isbn}))
    return jsonify({'reviews': dumps(reviews)})
 
 # 북마크 저장
-@app.route('/bookmark', methods=['POST'])
+@app.route('/bookmarks/new', methods=['POST'])
 def bookmark():
     token_receive = request.cookies.get('mytoken')
     if token_receive is None:
@@ -197,7 +197,7 @@ def mypage():
     return render_template('mypage.html')
 
 # 북마크 조회
-@app.route('/mybook')
+@app.route('/bookmarks/read')
 def show_bookmark():
     token_receive = request.cookies.get('mytoken')
     payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
@@ -208,7 +208,7 @@ def show_bookmark():
     return jsonify({'bookmarks': dumps(bookmarks)})
 
 # 북마크 삭제
-@app.route('/mybook/delete', methods=['POST'])
+@app.route('/bookmarks/delete', methods=['POST'])
 def delete_bookmark():
     token_receive = request.cookies.get('mytoken')
     payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
