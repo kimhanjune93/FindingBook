@@ -13,6 +13,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
+
     <style>
         * {
             font-family: 'Jua', sans-serif;
@@ -24,11 +25,21 @@
             flex-wrap: wrap;
         }
         .card {
-            margin : 15px;
+            margin :15px;
         }
         .close-button{
             margin-left : 200px;
             position:absolute;
+        }
+        .card img:hover {
+            transform: scale(1.5, 1.5);
+            transition-duration: 0.5s;
+        }
+        .card img{
+            transition-duration: 1s;
+        }
+        .card .card {
+            overfolw: hidden;
         }
     </style>
 </head>
