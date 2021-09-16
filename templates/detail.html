@@ -3,134 +3,195 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+
+    <!-- Bulma CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
+    <!-- Font Awesome CSS -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <!-- home style CSS -->
+    <link rel="stylesheet" type="text/css" href="/static/home_style.css">
+
+    <!-- JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            get_list()
+            show_review()
+        })
+
+        function get_list() {
+            let isbn = {{isbn}}
+                $('#book-box').empty();
+            let book_name = $("#book_name").val();
+            $.ajax({
+                type: "GET",
+                url: "https://dapi.kakao.com/v3/search/book?target=title",
+                data: {
+                    query: isbn,
+                    size: 50
+                },
+                headers: {Authorization: "KakaoAK 07adc98fbcdc85184c1b3f274ce34f54"},
+            }).done(function (msg) {
+                console.log(msg.documents)
+                let title = msg.documents[0].title;
+                let author = msg.documents[0].authors;
+                let contents = msg.documents[0].contents;
+                let thumbnail = msg.documents[0].thumbnail;
+
+                let temp_html = `<div class="card mb-3 book-card card-box" style="max-width: 600px;">
+                                    <div class="row g-0">
+                                        <div class="col-md-4" style="align-items: center">
+                                            <img src="${thumbnail}" class="img-fluid rounded-start" alt="..." style="width: 100%; height: 100%; object-fit: cover">
+                                        </div>
+                                        <div class="col-md-8">
+                                            <div class="card-body">
+                                                <h5 class="card-title" style="font-weight: bold">${title}</h5>
+                                                <p class="card-text"><small class="text-muted">${author}</small></p>
+                                                <p class="card-text">${contents}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>`
+                $("#card-container").append(temp_html)
+
+            })
+        }
+
+        // 리뷰 작성
+        function make_review() {
+            let review = $("#review").val();
+            let isbn = {{isbn}}
+
+                $.ajax({
+                    type: "POST",
+                    url: "/review",
+                    data: {
+                        review_give: review,
+                        isbn_give: isbn
+                    }, success: function (response) {
+                        alert(response['msg']);
+                        window.location.reload();
+                    }
+                })
+        }
+
+
+        // 리뷰 조회
+        function show_review() {
+            let isbn = {{isbn}}
+                $.ajax({
+                    type: "GET",
+                    url: `/review?isbn=${isbn}`,
+                    data: {},
+                    success: function (response) {
+                        // response[넘겨준 데이터 키] -> JSON.parse로 형변환
+                        let reviews = JSON.parse(response['reviews'])
+                        console.log(reviews)
+
+                        // 컬럼 접근: reviews[행][컬럼명]
+                        for (let i = 0; i < reviews.length; i++) {
+                            let username = reviews[i]['username']
+                            let review = reviews[i]['review']
+                            let temp_html = `<tr>
+                                            <th scope="row">${i+1}</th>
+                                            <td>${username}</td>
+                                            <td>${review}</td>
+                                        </tr>`
+                            $("#review-box").append(temp_html)
+                        }
+                    }
+                });
+        }
+
+    </script>
+
+    <style>
+        .inner {
+        {#background-color: antiquewhite;#}
+        }
+
+        .card-box {
+            width: 70%;
+            margin: 50px auto;
+            max-width: 700px;
+        }
+
+        .table-container > h1 {
+            margin-top: 40px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 20px;
+        }
+
+        .table-container > table {
+            width: 75%;
+            max-width: 800px;
+        }
+
+        .table {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+
+    </style>
 
 </head>
 <body>
 
-<h1>상세보기 페이지</h1>
+<div class="wrap">
+    <div class="banner">
+        <div class="banner-top">
+            {% if user_exist %}
+                <button class="button is-primary" onclick="sign_out()">로그아웃</button>
+            {% else %}
+                <button href="#"
+                        onclick='window.open("login","_blank","height=500,width=500, status=yes,toolbar=no,menubar=no,location=no");return false'
+                        class="button is-primary">로그인
+                </button>
+            {% endif %}
+        </div>
+        <div class="banner-row" onclick="window.location.href = '/'">
+            <h1 href="/detail" class="banner_title">오늘 뭐 읽지?</h1>
+        </div>
+    </div>
 
-<span id="title">제목: </span><br>
-<span id="author">저자: </span><br>
-<span id="publisher">출판사: </span><br>
-<span id="price">가격: </span><br>
-<img id="thumbnail" src="" alt="">
-<button onclick="bookmark()">북마크</button>
+    <div class="inner" id="card-container">
+    </div>
 
-<!-- title 값 추출용 -->
-<input type="hidden" value="" id="title_give" name="title_give">
+    <div class="table-container">
+        <h1> 리뷰 작성하기</h1>
+        <div class="search-box mx-auto mt-4 search-bar input-group mb-3">
+            <input type="text" class="form-control" id="review" placeholder="리뷰 내용을 작성해주세요."
+                   aria-label="Recipient's username"
+                   aria-describedby="button-addon2"
+                   onkeyup="enter_key()">
+            <button class="btn btn-outline-secondary" type="button" id="button-addon2" onclick="make_review() ">등록
+            </button>
+        </div>
 
-<h3>리뷰작성</h3>
-<input id="review" type="text" placeholder="리뷰를 작성해 주세요">
-<button onclick="make_review()">작성</button>
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col" style="width: 20%;">No</th>
+                <th scope="col" style="width: 30%;">ID</th>
+                <th scope="col" style="width: 50%;">리뷰 내용</th>
+            </tr>
+            </thead>
+            <tbody id="review-box">
+            </tbody>
+        </table>
+    </div>
 
-<!-- 리뷰들이 보여질 영역 -->
-<div id="review-box">
+
 </div>
 
-
-
-<script>
-    $(document).ready(function () {
-        get_list()
-        show_review()
-    })
-
-    // 도서 정보
-    function get_list() {
-        let isbn = {{isbn}}
-        $('#book-box').empty();
-        let book_name = $("#book_name").val();
-        $.ajax({
-            type: "GET",
-            url: "https://dapi.kakao.com/v3/search/book?target=title",
-            data: {
-                query: isbn,
-                size: 50
-            },
-            headers: {Authorization: "KakaoAK 07adc98fbcdc85184c1b3f274ce34f54"},
-        }).done(function (msg) {
-            console.log(msg.documents)
-            let title = msg.documents[0].title;
-            let author = msg.documents[0].authors[0];
-            let publisher = msg.documents[0].publisher;
-            let price = msg.documents[0].sale_price;
-            let thumbnail = msg.documents[0].thumbnail;
-
-            $('input[name=title_give]').attr('value', title);
-            $("#title").append(title);
-            $("#author").append(author);
-            $("#publisher").append(publisher);
-            $("#price").append(price);
-            $("#thumbnail").attr("src", thumbnail);
-        })
-    }
-
-    // 리뷰 작성
-    function make_review() {
-        let review = $("#review").val();
-        let isbn = {{isbn}}
-
-        $.ajax({
-            type: "POST",
-            url: "/review",
-            data: {
-                review_give: review,
-                isbn_give: isbn
-            },success: function (response) {
-                alert(response['msg']);
-                window.location.reload();
-            }
-        })
-
-    }
-
-    // 리뷰 조회
-    function show_review() {
-        let isbn = {{isbn}}
-        $.ajax({
-            type: "GET",
-            url: `/review?isbn=${isbn}`,
-            data: {},
-            success: function (response) {
-                // response[넘겨준 데이터 키] -> JSON.parse로 형변환
-                let reviews = JSON.parse(response['reviews'])
-                console.log(reviews)
-
-                // 컬럼 접근: reviews[행][컬럼명]
-                for (let i=0; i<reviews.length; i++) {
-                    username = reviews[i]['username']
-                    review = reviews[i]['review']
-
-                    temp_html = `
-                        ${username}, ${review} <br>
-                    `
-                    $("#review-box").append(temp_html)
-                }
-            }
-        });
-    }
-
-    // 북마크 저장
-    function bookmark() {
-        let isbn = {{ isbn }};
-        let title = $('#title_give').val();
-        let thumbnail = jQuery('#thumbnail').attr("src");
-        $.ajax({
-            type: "POST",
-            url: `/bookmark`,
-            data: {
-                isbn: isbn,
-                title: title,
-                thumbnail: thumbnail
-            }, success: function (response) {
-                alert(response['msg'])
-                window.location.reload();
-            }
-        })
-    }
-
-</script>
 
 </body>
 </html>
