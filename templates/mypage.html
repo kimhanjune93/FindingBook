@@ -79,18 +79,7 @@
                     isbn = bookmark[i]['isbn'];
                     title = bookmark[i]['title'];
                     thumbnail = bookmark[i]['thumbnail']
-
-                    {#let temp_html =#}
-                    {#    `#}
-                    {#    <div class="card" style="width: 18rem;">#}
-                    {#        <img src="${thumbnail}" class="card-img-top" alt="...">#}
-                    {#        <div class="card-body">#}
-                    {#            <h5 class="card-title">${title}</h5>#}
-                    {#            <button onclick="delete_bookmark(${i})" class="deleteBtn">북마크 삭제</button>#}
-                    {#            <input type="hidden" class="isbn" value="${isbn}">#}
-                    {#         </div>#}
-                    {#    </div>#}
-                    {#    `#}
+                    
                     let temp_html = `
                     <div class="card" style="width: 14rem;">
                         <spen><button type="button" class="btn-close close-button" aria-label="Delete"
