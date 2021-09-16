@@ -15,6 +15,10 @@
 <span id="publisher">출판사: </span><br>
 <span id="price">가격: </span><br>
 <img id="thumbnail" src="" alt="">
+<button onclick="bookmark()">북마크</button>
+
+<!-- title 값 추출용 -->
+<input type="hidden" value="" id="title_give" name="title_give">
 
 <h3>리뷰작성</h3>
 <input id="review" type="text" placeholder="리뷰를 작성해 주세요">
@@ -32,6 +36,7 @@
         show_review()
     })
 
+    // 도서 정보
     function get_list() {
         let isbn = {{isbn}}
         $('#book-box').empty();
@@ -52,6 +57,7 @@
             let price = msg.documents[0].sale_price;
             let thumbnail = msg.documents[0].thumbnail;
 
+            $('input[name=title_give]').attr('value', title);
             $("#title").append(title);
             $("#author").append(author);
             $("#publisher").append(publisher);
@@ -103,6 +109,25 @@
                 }
             }
         });
+    }
+
+    // 북마크 저장
+    function bookmark() {
+        let isbn = {{ isbn }};
+        let title = $('#title_give').val();
+        let thumbnail = jQuery('#thumbnail').attr("src");
+        $.ajax({
+            type: "POST",
+            url: `/bookmark`,
+            data: {
+                isbn: isbn,
+                title: title,
+                thumbnail: thumbnail
+            }, success: function (response) {
+                alert(response['msg'])
+                window.location.reload();
+            }
+        })
     }
 
 </script>

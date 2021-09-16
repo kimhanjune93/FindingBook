@@ -124,22 +124,11 @@ def get_posts():
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return redirect(url_for("home"))
 
-
-@app.route('/update_like', methods=['POST'])
-def update_like():
-    token_receive = request.cookies.get('mytoken')
-    try:
-        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
-        # 좋아요 수 변경
-        return jsonify({"result": "success", 'msg': 'updated'})
-    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
-        return redirect(url_for("home"))
-
 # 도서 상세보기 페이지
 @app.route('/detail')
 def book_detail():
    isbn = request.args.get('isbn')
-   print(isbn)
+   # print(isbn)
    return render_template('detail.html', isbn=isbn)
 
 # 리뷰 작성
@@ -169,8 +158,37 @@ def make_review():
 def read_review():
    isbn = request.args.get('isbn')
    reviews = list(db.reviews.find({'isbn': isbn}))
-   print(isbn, len(reviews))
+   # print(isbn, len(reviews))
    return jsonify({'reviews': dumps(reviews)})
+
+# 북마크 저장
+@app.route('/bookmark', methods=['POST'])
+def bookmark():
+    token_receive = request.cookies.get('mytoken')
+    if token_receive is None:
+        return jsonify({'msg': '로그인을 먼저 해주세요'})
+    else:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+        id = payload['id']
+        isbn = request.form['isbn']
+        title = request.form['title']
+        thumbnail = request.form['thumbnail']
+
+        count = db.bookmark.find({'username': id, 'isbn': isbn}).count()
+        # print(count)
+        if count > 0:
+            return jsonify({'msg': '이미 북마크한 도서입니다'})
+        else:
+            doc = {
+                'username': id,
+                'isbn' : isbn,
+                'title': title,
+                'thumbnail': thumbnail
+            }
+
+            db.bookmark.insert_one(doc)
+
+            return jsonify({'msg': '북마크 저장 완료!'})
 
 
 if __name__ == '__main__':
