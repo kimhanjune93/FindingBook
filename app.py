@@ -141,11 +141,13 @@ def make_review():
         id = payload['id']
         review = request.form['review_give']
         isbn = request.form['isbn_give']
+        regdate = request.form['regdate']
 
         doc = {
             'username': id,
             'review': review,
-            'isbn': isbn
+            'isbn': isbn,
+            'regdate': regdate
         }
 
         db.reviews.insert_one(doc)

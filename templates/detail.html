@@ -65,6 +65,16 @@
 
         // 리뷰 작성
         function make_review() {
+
+            let today = new Date();
+            let year = today.getFullYear();
+            let month = today.getMonth();
+            let date = today.getDate();
+            let hours = today.getHours();
+            let minutes = today.getMinutes();
+
+            let regdate = year + '/' + month + '/' + date + ' ' + hours + ':' + minutes;
+
             let review = $("#review").val();
             let isbn = {{isbn}}
 
@@ -73,7 +83,8 @@
                     url: "/review",
                     data: {
                         review_give: review,
-                        isbn_give: isbn
+                        isbn_give: isbn,
+                        regdate: regdate
                     }, success: function (response) {
                         alert(response['msg']);
                         window.location.reload();
@@ -98,10 +109,12 @@
                         for (let i = 0; i < reviews.length; i++) {
                             let username = reviews[i]['username']
                             let review = reviews[i]['review']
+                            let regdate = reviews[i]['regdate']
                             let temp_html = `<tr>
                                             <th scope="row">${i+1}</th>
                                             <td>${username}</td>
                                             <td>${review}</td>
+                                            <td>${regdate}</td>
                                         </tr>`
                             $("#review-box").append(temp_html)
                         }
@@ -179,9 +192,10 @@
         <table class="table">
             <thead>
             <tr>
-                <th scope="col" style="width: 20%;">No</th>
-                <th scope="col" style="width: 30%;">ID</th>
+                <th scope="col" style="width: 10%;">No</th>
+                <th scope="col" style="width: 20%;">ID</th>
                 <th scope="col" style="width: 50%;">리뷰 내용</th>
+                <th scope="col" style="width: 20%;">작성 시간</th>
             </tr>
             </thead>
             <tbody id="review-box">
