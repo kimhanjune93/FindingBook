@@ -190,6 +190,38 @@ def bookmark():
 
             return jsonify({'msg': '북마크 저장 완료!'})
 
+@app.route('/mypage')
+def mypage():
+    return render_template('mypage.html')
+
+# 북마크 조회
+@app.route('/mybook')
+def show_bookmark():
+    token_receive = request.cookies.get('mytoken')
+    payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+    id = payload['id']
+
+    bookmarks = db.bookmark.find({'username': id}, {'_id':False})
+    # print(bookmark)
+
+    # return render_template('mypage.html', bookmark=dumps(bookmarks))
+    # return render_template('mypage.html', bookmark=bookmarks)
+    return jsonify({'bookmarks': dumps(bookmarks)})
+
+# 북마크 삭제
+@app.route('/mybook/delete', methods=['POST'])
+def delete_bookmark():
+    token_receive = request.cookies.get('mytoken')
+    payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+    id = payload['id']
+    isbn = request.form['isbn']
+    print(isbn)
+
+    db.bookmark.delete_one({'username': id, 'isbn': isbn})
+
+    return jsonify({'msg': '북마크 삭제 완료!'})
+
+
 
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)

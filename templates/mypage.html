@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <style>
+        #bookmark-box {
+            display: flex;
+            justify-content: center;
+            flex-direction: row;
+            flex-wrap: wrap;
+        }
+        .card {
+            margin: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<h1>마이페이지</h1>
+
+<div id="bookmark-box"></div>
+
+<script>
+
+    $(document).ready(function () {
+        show_mybook()
+    })
+
+    function show_mybook() {
+        $.ajax({
+            type: "GET",
+            url: `/mybook`,
+            data: {},
+            success: function (response) {
+                let bookmark = JSON.parse(response['bookmarks']);
+                console.log(bookmark);
+
+                for (let i=0; i<bookmark.length; i++) {
+                    isbn = bookmark[i]['isbn'];
+                    title = bookmark[i]['title'];
+                    thumbnail = bookmark[i]['thumbnail']
+
+                    let temp_html =
+                        `
+                        <div class="card" style="width: 18rem;">
+                            <img src="${thumbnail}" class="card-img-top" alt="...">
+                            <div class="card-body">
+                                <h5 class="card-title">${title}</h5>
+                                <input type="hidden" id="isbn" value="${isbn}">
+                                <button onclick="delete_bookmark()">북마크 삭제</button>
+                                <button onclick="console.log(${isbn})">ISBN확인!</button>
+                             </div>
+                        </div>
+                        `
+                    $('#bookmark-box').append(temp_html);
+                }
+            }
+        })
+    }
+
+    function delete_bookmark() {
+        let isbn = $('#isbn').val();
+        $.ajax({
+            type: "POST",
+            url: '/mybook/delete',
+            data: {
+                isbn: isbn
+            },success: function (response) {
+                console.log(isbn);
+                alert(response['msg']);
+                window.location.reload();
+            }
+        })
+    }
+
+</script>
+
+</body>
+</html>
