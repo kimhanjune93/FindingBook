@@ -90,7 +90,7 @@
         setTimeout(function () {
             opener.location.reload(); //부모창 리프레쉬
             self.close(); //현재창 닫기
-        }, 1000); // 0.3초후 실행 1000당 1초
+        }, 50); // 0.3초후 실행 1000당 1초
     </script>
 
 </head>
@@ -99,17 +99,12 @@
     <div class="banner">
         <div class="banner-top">
             {% if user_exist %}
-                <!--        <a onclick="sign_out()">로그아웃</a>-->
-                <button onclick="location.href='mypage'">마이페이지</button>
-                <button class="button is-primary" onclick="sign_out()">로그아웃</button>
+                <button class = "btn btn-light" onclick="location.href='mypage'">마이페이지</button>
+                <button class = "btn btn-light" onclick="sign_out()">로그아웃</button>
             {% else %}
-                <!--    <a href="#"-->
-                <!--       onclick='window.open("login","_blank","height=500,width=500, status=yes,toolbar=no,menubar=no,location=no");-->
-                <!--       return false'>-->
-                <!--        로그인</a>-->
                 <button href="#"
                         onclick='window.open("login","_blank","height=500,width=500, status=yes,toolbar=no,menubar=no,location=no");return false'
-                        class="button is-primary">로그인
+                        class = "btn btn-light">로그인
                 </button>
             {% endif %}
         </div>
