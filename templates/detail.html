@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>상세페이지</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -109,7 +109,7 @@
                         console.log(reviews)
 
                         // 컬럼 접근: reviews[행][컬럼명]
-                        for (let i = 0; i < reviews.length; i++) {
+                        for (let i=reviews.length-1; i>=0 ; i--) {
                             let username = reviews[i]['username']
                             let review = reviews[i]['review']
                             let regdate = reviews[i]['regdate']
