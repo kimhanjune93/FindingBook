@@ -128,7 +128,6 @@ def get_posts():
 @app.route('/detail')
 def book_detail():
    isbn = request.args.get('isbn')
-   # print(isbn)
    return render_template('detail.html', isbn=isbn)
 
 # 리뷰 작성
@@ -158,7 +157,6 @@ def make_review():
 def read_review():
    isbn = request.args.get('isbn')
    reviews = list(db.reviews.find({'isbn': isbn}))
-   # print(isbn, len(reviews))
    return jsonify({'reviews': dumps(reviews)})
 
 # 북마크 저장
@@ -175,7 +173,6 @@ def bookmark():
         thumbnail = request.form['thumbnail']
 
         count = db.bookmark.find({'username': id, 'isbn': isbn}).count()
-        # print(count)
         if count > 0:
             return jsonify({'msg': '이미 북마크한 도서입니다'})
         else:
@@ -190,6 +187,7 @@ def bookmark():
 
             return jsonify({'msg': '북마크 저장 완료!'})
 
+# 마이페이지
 @app.route('/mypage')
 def mypage():
     return render_template('mypage.html')
@@ -201,11 +199,8 @@ def show_bookmark():
     payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
     id = payload['id']
 
-    bookmarks = db.bookmark.find({'username': id}, {'_id':False})
-    # print(bookmark)
+    bookmarks = db.bookmark.find({'username': id}, {'_id': False})
 
-    # return render_template('mypage.html', bookmark=dumps(bookmarks))
-    # return render_template('mypage.html', bookmark=bookmarks)
     return jsonify({'bookmarks': dumps(bookmarks)})
 
 # 북마크 삭제
@@ -213,15 +208,14 @@ def show_bookmark():
 def delete_bookmark():
     token_receive = request.cookies.get('mytoken')
     payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+    num_receive = int(request.form['number_give'])
     id = payload['id']
-    isbn = request.form['isbn']
+    isbn = list(db.bookmark.find({'username': id}))[num_receive]['isbn']
     print(isbn)
 
     db.bookmark.delete_one({'username': id, 'isbn': isbn})
 
     return jsonify({'msg': '북마크 삭제 완료!'})
-
-
 
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)

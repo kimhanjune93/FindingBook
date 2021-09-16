@@ -25,10 +25,10 @@
 <script>
 
     $(document).ready(function () {
-        show_mybook()
-    })
+        show_bookmark()
+    });
 
-    function show_mybook() {
+    function show_bookmark() {
         $.ajax({
             type: "GET",
             url: `/mybook`,
@@ -48,9 +48,8 @@
                             <img src="${thumbnail}" class="card-img-top" alt="...">
                             <div class="card-body">
                                 <h5 class="card-title">${title}</h5>
-                                <input type="hidden" id="isbn" value="${isbn}">
-                                <button onclick="delete_bookmark()">북마크 삭제</button>
-                                <button onclick="console.log(${isbn})">ISBN확인!</button>
+                                <button onclick="delete_bookmark(${i})" class="deleteBtn">북마크 삭제</button>
+                                <input type="hidden" class="isbn" value="${isbn}">
                              </div>
                         </div>
                         `
@@ -60,20 +59,22 @@
         })
     }
 
-    function delete_bookmark() {
-        let isbn = $('#isbn').val();
+    // 각 행의 번호를 변수로 받아와서 db테이블 해당 행으로 접근하여 삭제
+    function delete_bookmark(i) {
+
         $.ajax({
             type: "POST",
             url: '/mybook/delete',
             data: {
-                isbn: isbn
+                number_give: i
             },success: function (response) {
-                console.log(isbn);
                 alert(response['msg']);
                 window.location.reload();
             }
         })
     }
+
+
 
 </script>
 
