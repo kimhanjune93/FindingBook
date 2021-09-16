@@ -10,10 +10,10 @@
 |회원가입|POST|/sign_up/save|
 |중복확인|POST|/sign_up/check_dup|
 |마이페이지|GET|/mypage|
-|도서검색 메인|GET|/|
-|도서 상세보기|GET|/detail|
-|리뷰 조회|GET|/review|
-|리뷰 작성|POST|/review|
-|북마크 저장|POST|/bookmark|
-|북마크 조회|GET|/mybook|
-|북마크 삭제|POST|/mybook/delete|
+|도서검색|GET|/KAKAO API|
+|도서 상세보기|GET|/books/read|
+|리뷰 조회|GET|/reviews/read|
+|리뷰 작성|POST|/reviews/new|
+|북마크 저장|POST|/bookmarks/new|
+|북마크 조회|GET|/bookmarks/read|
+|북마크 삭제|POST|/bookmarks/delete|
