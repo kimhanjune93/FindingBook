@@ -77,15 +77,8 @@
     <div class="inner">
         <h1><a href="#">FindingBook</a></h1>
         <ul id="gnb">
-            {% if user_exist %}
-                <li onclick="location.href='/mypage'"><a>마이페이지</a></li>
-                <li onclick="sign_out()"><a>로그아웃</a></li>
-            {% else %}
-                <li href="#"
-                    onclick='window.open("login","_blank","height=500,width=500, status=yes,toolbar=no,menubar=no,location=no");return false'>
-                    <a>로그인</a>
-                </li>
-            {% endif %}
+            <li onclick="location.href='/mypage'"><a>마이페이지</a></li>
+            <li onclick="sign_out()"><a>로그아웃</a></li>
         </ul>
     </div>
 </header>
