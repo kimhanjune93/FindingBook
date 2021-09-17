@@ -79,7 +79,7 @@
     <script>
         function sign_out() {
             $.removeCookie('mytoken', {path: '/'});
-            alert("로그아웃 성공!")
+            alert("로그아웃!!")
             window.location.href = "/"
         }
 
@@ -88,11 +88,8 @@
             self.close(); //현재창 닫기
         }, 50); // 0.3초후 실행 1000당 1초
     </script>
-
-
-
-
 </head>
+
 <body>
 <header>
     <div class="inner">
@@ -114,9 +111,9 @@
 <figure>
     <img src="/static/book_img.jpg">
     <div class="inner">
-        <h1 href="/detail" onclick="window.location.href = '/'">오늘 뭐 읽지?</h1>
+        <h1 href="/detail">오늘 뭐 읽지?</h1>
         <form>
-            <div class="search-bar input-group mb-3 mx-auto mt-4">
+            <div class="search-bar input-group mb-3 mx-auto mt-5">
                 <input type="text" class="form-control" placeholder="책 이름을 검색해주세요." aria-label="Recipient's username"
                        aria-describedby="button-addon2" id="input-add" onkeyup="enter_key()">
                 <button class="btn btn-outline-secondary" type="button" id="button-addon2" onclick="q1()">검색</button>
