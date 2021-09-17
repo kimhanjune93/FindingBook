@@ -6,8 +6,7 @@
 ### 와이어프레임
 
 1. 메인페이지
-![03_Copy of Copy of 메인 페이지](https://user-images.githubusercontent.com/51510602/133717933-ce551b01-117f-4478-a0e3-c30d6aa4d7e6.png)
-<img src="https://user-images.githubusercontent.com/51510602/133717933-ce551b01-117f-4478-a0e3-c30d6aa4d7e6.png" width="200" height="400"/>
+<img src="https://user-images.githubusercontent.com/51510602/133717933-ce551b01-117f-4478-a0e3-c30d6aa4d7e6.png" width="400" height="400"/>
 
 2. 로그인/회원가입 페이지
 ![01_로그인 페이지](https://user-images.githubusercontent.com/51510602/133717958-93aa4ca5-7a99-447a-a953-c7d3899c568f.png)
