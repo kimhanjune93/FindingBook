@@ -4,71 +4,108 @@
     <meta charset="UTF-8">
     <title>마이페이지</title>
 
+   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+
+    <!-- Bulma CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
+    <!-- Font Awesome CSS -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <!-- home style CSS -->
+    <link rel="stylesheet" type="text/css" href="/static/mark_style.css">
+
+    <!-- JS -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" href="/static/home_style.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
 
     <style>
-        * {
-            font-family: 'Jua', sans-serif;
-        }
         #bookmark-box {
-            width : 1016px;
+            width: 1016px;
             display: flex;
             justify-content: left;
             flex-direction: row;
             flex-wrap: wrap;
         }
+
+        section div.table-container h1 {
+            margin-top: 40px;
+            text-align: center;
+            letter-spacing: 4px;
+            font: bold 30px/1 "arial";
+            color: #444;
+        }
+
         .card {
-            margin :15px;
+            margin: 15px;
         }
-        .close-button{
-            margin-left : 200px;
-            position:absolute;
+
+        .close-button {
+            margin-left: 200px;
+            position: absolute;
         }
+
         .card img:hover {
             transform: scale(1.5, 1.5);
             transition-duration: 0.5s;
         }
-        .card img{
+
+        .card img {
             transition-duration: 1s;
         }
+
         .card .card {
             overflow: hidden;
         }
+
         .card-box-big {
-            display : flex;
+            display: flex;
             justify-content: center;
         }
+
         .bookmark-empty {
             margin: auto;
             margin-top: 50px;
-            color : grey;
+            color: grey;
         }
+
     </style>
 </head>
 <body>
-<div class="wrap">
-    <div class="banner">
-        <div class="banner-top">
-            <button class = "btn btn-light" onclick="location.href='/mypage'">마이페이지</button>
-            <button class="btn btn-light" onclick="sign_out()">로그아웃</button>
-        </div>
-        <div class="banner-row" onclick="window.location.href = '/'">
-            <h1 href="/detail" class="banner_title">오늘 뭐 읽지?</h1>
-        </div>
+
+<header>
+    <div class="inner">
+        <h1><a href="#">FindingBook</a></h1>
+        <ul id="gnb">
+            {% if user_exist %}
+                <li onclick="location.href='/mypage'"><a>마이페이지</a></li>
+                <li onclick="sign_out()"><a>로그아웃</a></li>
+            {% else %}
+                <li href="#"
+                    onclick='window.open("login","_blank","height=500,width=500, status=yes,toolbar=no,menubar=no,location=no");return false'>
+                    <a>로그인</a>
+                </li>
+            {% endif %}
+        </ul>
     </div>
-    <div class = "card-box-big">
+</header>
+
+<figure>
+    <img src="/static/book_img.jpg">
+    <div class="inner">
+        <h1 href="/detail" onclick="window.location.href = '/'">BookMarks</h1>
+    </div>
+</figure>
+
+
+<section id="list_box">
+    <div class="table-container">
+        {#        <h1> 북마크</h1>#}
+    </div>
+    <div class="card-box-big">
         <div class="card-columns" id="bookmark-box"></div>
     </div>
-
-</div>
+</section>
 
 
 <script>
@@ -85,12 +122,11 @@
             success: function (response) {
                 let bookmark = JSON.parse(response['bookmarks']);
                 console.log(bookmark);
-                let temp_html=""
-                if (bookmark.length<=0) {
-                    temp_html =`<h1 class = "bookmark-empty">북마크가 비어있습니다.<h1>`
+                let temp_html = ""
+                if (bookmark.length <= 0) {
+                    temp_html = `<h1 class = "bookmark-empty">북마크가 비어있습니다.<h1>`
                     $('#bookmark-box').append(temp_html);
-                }
-                else {
+                } else {
                     for (let i = 0; i < bookmark.length; i++) {
                         isbn = bookmark[i]['isbn'];
                         title = bookmark[i]['title'];
@@ -129,10 +165,10 @@
     }
 
     function sign_out() {
-            $.removeCookie('mytoken', {path: '/'});
-            alert("로그아웃 성공!")
-            window.location.href = "/"
-        }
+        $.removeCookie('mytoken', {path: '/'});
+        alert("로그아웃!!")
+        window.location.href = "/"
+    }
 </script>
 
 </body>
