@@ -129,8 +129,11 @@ def get_posts():
 def book_detail():
    isbn = request.args.get('isbn')
    token_receive = request.cookies.get('mytoken')
-   payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
-   return render_template('detail.html', isbn=isbn, user_exist=bool(payload['id']))
+   if token_receive is not None:
+       payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+       return render_template('detail.html', isbn=isbn, user_exist=bool(payload['id']))
+   else:
+       return render_template('detail.html', isbn=isbn)
 
 # 리뷰 작성
 @app.route('/reviews/new', methods=['POST'])
@@ -204,8 +207,9 @@ def show_bookmark():
     id = payload['id']
 
     bookmarks = db.bookmark.find({'username': id}, {'_id': False})
+    bookmarks_count = db.bookmark.find({'username': id}, {'_id': False}).count()
 
-    return jsonify({'bookmarks': dumps(bookmarks)})
+    return jsonify({'bookmarks': dumps(bookmarks), 'bookmarks_count':bookmarks_count})
 
 # 북마크 삭제
 @app.route('/bookmarks/delete', methods=['POST'])
