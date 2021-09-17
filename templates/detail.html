@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <title>상세페이지</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
 
@@ -44,8 +43,7 @@
                 let contents = msg.documents[0].contents;
                 let thumbnail = msg.documents[0].thumbnail;
                 console.log(title)
-
-                let temp_html = `<div class="card mb-3 book-card card-box" style="max-width: 600px;">
+                let temp_html = `<div class="card mb-3 book-card card-box" id="${isbn}" style="max-width: 600px;">
                                     <div class="row g-0">
                                         <div class="col-md-4" style="align-items: center">
                                             <img id="thumbnail" src="${thumbnail}" class="img-fluid rounded-start" alt="..." style="width: 100%; height: 100%; object-fit: cover">
@@ -69,9 +67,19 @@
                                     </div>
                                 </div>`
                 $("#card-container").append(temp_html)
+                heart_status(isbn)
             })
         }
-
+        function heart_status(isbn) {
+            let $a_bookmark = $(`#${isbn} a[aria-label='heart']`)
+            let $i_bookmark=$a_bookmark.find("i")
+            let a={{ heart_stat }}
+            console.log(a)
+            if(a) {
+                $i_bookmark.addClass("fa-heart").removeClass("fa-heart-o")}
+            else {
+                $i_bookmark.addClass("fa-heart-o").removeClass("fa-heart")}
+        }
         // 리뷰 작성
         function make_review() {
 

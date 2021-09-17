@@ -131,9 +131,11 @@ def book_detail():
    token_receive = request.cookies.get('mytoken')
    if token_receive is not None:
        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
-       return render_template('detail.html', isbn=isbn, user_exist=bool(payload['id']))
+       id=payload['id']
+       heart_count = db.bookmark.find({'username': id, 'isbn': isbn}).count()
+       return render_template('detail.html', isbn=isbn, user_exist=bool(payload['id']), heart_stat = heart_count)
    else:
-       return render_template('detail.html', isbn=isbn)
+       return render_template('detail.html', isbn=isbn, heart_stat = 0)
 
 # 리뷰 작성
 @app.route('/reviews/new', methods=['POST'])
