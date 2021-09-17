@@ -56,7 +56,12 @@
                                                 <div style="display: flex; justify-content: space-between;">
                                                 <p class="card-text"><small class="text-muted">${author}</small></p>
                                                 <input type="hidden" value="${title}" id="title_give" name="title_give">
-                                                <button onclick="bookmark()">북마크</button>
+                                                <a aria-label="heart" onclick="bookmark('', 'heart')">
+                                                   <span class="icon is-small">
+                                                   <i class="fa fa-heart-o" style="color:red" aria-hidden="true"></i>
+                                                   </span>&nbsp;
+                                                   <span class="like-num"></span>
+                                                 </a>
                                                 </div>
                                                 <p class="card-text">${contents}</p>
                                             </div>
@@ -110,7 +115,7 @@
                         console.log(reviews)
 
                         // 컬럼 접근: reviews[행][컬럼명]
-                        for (let i=reviews.length-1; i>=0 ; i--) {
+                        for (let i = reviews.length - 1; i >= 0; i--) {
                             let username = reviews[i]['username']
                             let review = reviews[i]['review']
                             let regdate = reviews[i]['regdate']
@@ -161,7 +166,7 @@
 
 
     <style>
-        
+
 
         .card-box {
             width: 70%;
@@ -201,7 +206,7 @@
             {% else %}
                 <button href="#"
                         onclick='window.open("/login","_blank","height=500,width=500, status=yes,toolbar=no,menubar=no,location=no");return false'
-                        class = "btn btn-light">로그인
+                        class="btn btn-light">로그인
                 </button>
             {% endif %}
         </div>
@@ -237,7 +242,6 @@
             </tbody>
         </table>
     </div>
-
 
 
 </div>
