@@ -68,12 +68,6 @@
         function q2() {
             window.location.href = `/detail`
         }
-
-        function enter_key() {
-            if (window.event.keyCode === 13) {
-                q1()
-            }
-        }
     </script>
 
     <script>
@@ -115,7 +109,7 @@
         <form>
             <div class="search-bar input-group mb-3 mx-auto mt-5">
                 <input type="text" class="form-control" placeholder="책 이름을 검색해주세요." aria-label="Recipient's username"
-                       aria-describedby="button-addon2" id="input-add" onkeyup="enter_key()">
+                       aria-describedby="button-addon2" id="input-add">
                 <button class="btn btn-outline-secondary" type="button" id="button-addon2" onclick="q1()">검색</button>
             </div>
         </form>
