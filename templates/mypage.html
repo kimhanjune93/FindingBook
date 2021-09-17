@@ -46,6 +46,11 @@
             display : flex;
             justify-content: center;
         }
+        .bookmark-empty {
+            margin: auto;
+            margin-top: 50px;
+            color : grey;
+        }
     </style>
 </head>
 <body>
@@ -80,24 +85,30 @@
             success: function (response) {
                 let bookmark = JSON.parse(response['bookmarks']);
                 console.log(bookmark);
-
-                for (let i = 0; i < bookmark.length; i++) {
-                    isbn = bookmark[i]['isbn'];
-                    title = bookmark[i]['title'];
-                    thumbnail = bookmark[i]['thumbnail']
-                    
-                    let temp_html = `
-                    <div class="card" style="width: 14rem;">
-                        <spen><button type="button" class="btn-close close-button" aria-label="Delete"
-                                onclick="delete_bookmark(${i})"></button></spen>
-                        <img class="card-img-top" src="${thumbnail}" alt="Card image cap">
-                        <div class="card-body">
-                            <h5 class="card-title">${title}</h5>
-                        </div>
-                    </div>`
+                let temp_html=""
+                if (bookmark.length<=0) {
+                    temp_html =`<h1 class = "bookmark-empty">북마크가 비어있습니다.<h1>`
                     $('#bookmark-box').append(temp_html);
-                                            {#<a  class="btn btn-danger">삭제하기</a>#}
                 }
+                else {
+                    for (let i = 0; i < bookmark.length; i++) {
+                        isbn = bookmark[i]['isbn'];
+                        title = bookmark[i]['title'];
+                        thumbnail = bookmark[i]['thumbnail']
+
+                        temp_html = `
+                        <div class="card" style="width: 14rem;">
+                            <spen><button type="button" class="btn-close close-button" aria-label="Delete"
+                                    onclick="delete_bookmark(${i})"></button></spen>
+                            <img class="card-img-top" src="${thumbnail}" alt="Card image cap">
+                            <div class="card-body">
+                                <h5 class="card-title">${title}</h5>
+                            </div>
+                        </div>`
+                        $('#bookmark-box').append(temp_html);
+                    }
+                }
+
             }
         })
     }
