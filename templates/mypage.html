@@ -38,21 +38,27 @@
 
         .card {
             margin: 15px;
+            overflow: hidden;
         }
+
+        {#.cad:hover {#}
+        {#    transform: scale(1.4, 1.4);#}
+        {#    transition-duration: 0.5s;#}
+        {#}#}
 
         .close-button {
             margin-left: 200px;
             position: absolute;
         }
 
-        .card img:hover {
-            transform: scale(1.5, 1.5);
-            transition-duration: 0.5s;
-        }
+        {#.card img:hover {#}
+        {#    transform: scale(1.05, 1.05);#}
+        {#    transition-duration: 0.5s;#}
+        {#}#}
 
-        .card img {
-            transition-duration: 1s;
-        }
+        {#.card img {#}
+        {#    transition-duration: 1s;#}
+        {#}#}
 
         .card .card {
             overflow: hidden;
@@ -93,7 +99,6 @@
 
 <section id="list_box">
     <div class="table-container">
-        {#        <h1> 북마크</h1>#}
     </div>
     <div class="card-box-big">
         <div class="card-columns" id="bookmark-box"></div>
