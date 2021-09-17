@@ -26,7 +26,8 @@ body {
 
 .button.is-sparta {
     background-color: #00d1b2;
-    border-color: transparent;
+    /*border-color: transparent;*/
+    border-radius: 25px;
     color: #fff !important;
 }
 
