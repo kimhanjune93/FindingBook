@@ -81,6 +81,10 @@
 |북마크 조회|GET|/bookmarks/read|
 |북마크 삭제|POST|/bookmarks/delete|
 
+### Database
+
+<img src="https://user-images.githubusercontent.com/76515226/133820852-07286671-c48b-4a78-9c82-41f76ea0ddba.png"/></a>&nbsp;
+
 
 ### 와이어프레임
 
