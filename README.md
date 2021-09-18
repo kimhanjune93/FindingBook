@@ -110,4 +110,8 @@ http://dromy.shop/
   - 상세페이지에서 찜 버튼을 누르면 마이페이지에 책 저장
 <img src="https://user-images.githubusercontent.com/51510602/133717993-d03ac5ba-2167-4d9a-b8b5-e8a7c65063d6.png" width="400" height="400"/>
 
+### 문제 해결
 
+1. 문제 : 공공데이터 openApi 약국 데이터로 프로젝트를 진행하다가 데이터 가공에 어려움이 생김
+   해결 : kakao openApi 도서 데이터로 대체 후 프로젝트 주제 변경
+2. https://github.com/jhhong0930/voyage99
