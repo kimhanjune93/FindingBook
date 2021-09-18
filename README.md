@@ -112,10 +112,10 @@ http://dromy.shop/
 
 ### 문제 해결
 
-1. 문제 : 공공데이터 openApi 약국 데이터로 프로젝트를 진행하다가 데이터 가공에 어려움이 생김
-   해결 : kakao openApi 도서 데이터로 대체 후 프로젝트 주제 변경
+1. 문제 : 공공데이터 openApi 약국 데이터로 프로젝트를 진행하다가 데이터 가공에 어려움이 생김<br>
+   해결 : kakao openApi 도서 데이터로 대체 후 프로젝트 주제 변경<br>
 2. https://github.com/jhhong0930/voyage99
-3. 문제 : convert python boolean to javascript boolean
+3. 문제 : convert python boolean to javascript boolean<br>
    해결 : convert 하지 않고 int 로 return 함
 
 ### 질문
