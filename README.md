@@ -122,8 +122,7 @@ http://dromy.shop/
 1. css 파일 나누는 기준
 2. 로그인 팝업 닫는 함수에서 에러
 <img width="990" alt="스크린샷 2021-09-18 오후 1 45 32" src="https://user-images.githubusercontent.com/51510602/133872919-bd1a3426-768a-49f0-9cdb-29482ad9c340.png">
-<img width="404" alt="스크린샷 2021-09-18 오후 1 44 56" src="https://user-images.githubusercontent.com/51510602/133872921-93cbcc12-57d8-47db-b93f-015f46ad2aac.png">
-3. 
+<img width="404" alt="스크린샷 2021-09-18 오후 1 44 56" src="https://user-images.githubusercontent.com/51510602/133872921-93cbcc12-57d8-47db-b93f-015f46ad2aac.png"> 
 
 
 
